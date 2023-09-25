@@ -9,97 +9,69 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class LoginTests extends BaseTest {
-    @Test
+    @Test(groups = "smoke")
     public void loginEmailPasswordTest() throws InterruptedException {
 
-        String url = "https://qa.koel.app/#!/home";
+        WebElement emailField = getDriver().findElement(By.cssSelector("input[type='email']"));
+        WebElement passwordField = getDriver().findElement(By.cssSelector("input[type='password']"));
+        WebElement loginButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
+//        emailField.click();
+        clickToElement(emailField);
 
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+//        emailField.sendKeys("demo@class.com");
+        sendKeysToElement(emailField, "demo@class.com");
 
-        driver.get(url);
+//        passwordField.click();
+        clickToElement(passwordField);
 
-        WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
-        WebElement passwordField = driver.findElement(By.cssSelector("input[type='password']"));
-        WebElement loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
+//        passwordField.sendKeys("te$t$tudent");
+        sendKeysToElement(passwordField, "te$t$tudent");
 
-        emailField.click();
-        emailField.sendKeys("demo@class.com");
-
-        passwordField.click();
-        passwordField.sendKeys("te$t$tudent");
-
-        loginButton.click();
+//        loginButton.click();
+        clickToElement(loginButton);
         Thread.sleep(5000);
 
-        WebElement avatar = driver.findElement(By.cssSelector(".avatar"));
-        loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        WebElement avatar = getDriver().findElement(By.cssSelector(".avatar"));
+        loginButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
 
-        Assert.assertEquals(driver.getCurrentUrl(), url);
+        Assert.assertEquals(getDriver().getCurrentUrl(), url);
         Assert.assertTrue(avatar.isDisplayed());
         Assert.assertFalse(loginButton.isDisplayed());
-
-        driver.quit();
-
     }
 
-    @Test
+
+    @Test(groups = "Regression", description = "Login to service with not exist email", testName = "Check login test")
     public void loginWithNotExistEmailTest() throws InterruptedException {
 
-        String url = "https://qa.koel.app/#!/home";
+        WebElement emailField = getDriver().findElement(By.cssSelector("input[type='email']"));
+        WebElement passwordField = getDriver().findElement(By.cssSelector("input[type='password']"));
+        WebElement loginButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
+        clickToElement(emailField);
+        sendKeysToElement(emailField, "notExist@class.com");
 
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        clickToElement(passwordField);
+        sendKeysToElement(passwordField, "te$t$tudent");
 
-        driver.get(url);
 
-        WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
-        WebElement passwordField = driver.findElement(By.cssSelector("input[type='password']"));
-        WebElement loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
-
-        emailField.click();
-        emailField.sendKeys("notExist@class.com");
-
-        passwordField.click();
-        passwordField.sendKeys("te$t$tudent");
-
-        loginButton.click();
+        clickToElement(loginButton);
         Thread.sleep(5000);
         Assert.assertTrue(loginButton.isDisplayed());
-
-        driver.quit();
     }
 
     @Test
-    public void loginWithoutPasswordlTest() throws InterruptedException {
+    public void loginWithoutPasswordTest() throws InterruptedException {
 
-        String url = "https://qa.koel.app/#!/home";
+        WebElement emailField = getDriver().findElement(By.cssSelector("input[type='email']"));
+        WebElement loginButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-        driver.get(url);
-
-        WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
-        WebElement loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
-
-        emailField.click();
-        emailField.sendKeys("demo@class.com");
+        clickToElement(emailField);
+        sendKeysToElement(emailField, "demo@class.com");
 
         loginButton.click();
         Thread.sleep(5000);
         Assert.assertTrue(loginButton.isDisplayed());
-
-        driver.quit();
     }
 }
 
